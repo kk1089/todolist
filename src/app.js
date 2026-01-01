@@ -7,6 +7,18 @@ const addBtn = document.getElementById('addBtn');
 
 let tasks = [];
 
+todoInput.addEventListener('input', function () {
+    if (this.value.trim() !== '') {
+        this.style.border = '';
+        this.placeholder = 'новая задача...';
+    }
+});
+
+todoInput.addEventListener('focus', function () {
+    this.style.border = '';
+    this.placeholder = 'новая задача...';
+});
+
 function addTask() {
 
     const textTasks = todoInput.value.trim();
@@ -16,11 +28,11 @@ function addTask() {
         todoInput.placeholder = 'Введите новую задачу...';
         return;
     }
-    
+
     todoInput.style.border = '';
     todoInput.placeholder = 'новая задача...';
 
-    const newTask= {
+    const newTask = {
         id: Date.now(),
         text: textTasks,
         completed: false
@@ -34,9 +46,9 @@ function addTask() {
 }
 
 function renderTasks() {
-     todoList.innerHTML = '';
+    todoList.innerHTML = '';
 
-      if (tasks.length === 0) {
+    if (tasks.length === 0) {
         const li = document.createElement('li');
         li.textContent = 'Нет задач';
         todoList.appendChild(li);
@@ -44,40 +56,40 @@ function renderTasks() {
     }
 
     tasks.forEach((task, index) => {
-      const li = document.createElement('li');
-     
-      const checkbox = document.createElement('input');
-      checkbox.type = 'checkbox';
-      checkbox.className = 'task-checkbox';
-      checkbox.checked = task.completed;
+        const li = document.createElement('li');
 
-      const span = document.createElement('span');
-      span.textContent = task.text;
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.className = 'task-checkbox';
+        checkbox.checked = task.completed;
 
-      const deleteBtn = document.createElement('button');
-      deleteBtn.textContent = 'Удалить';
+        const span = document.createElement('span');
+        span.textContent = task.text;
 
-      handleCheckboxChange(checkbox, task, span);
-      handleDeleteButton(deleteBtn, task, index);
+        const deleteBtn = document.createElement('button');
+        deleteBtn.textContent = 'Удалить';
 
-      li.appendChild(checkbox);
-      li.appendChild(span);
-      li.appendChild(deleteBtn);
+        handleCheckboxChange(checkbox, task, span);
+        handleDeleteButton(deleteBtn, task, index);
 
-      todoList.appendChild(li); 
+        li.appendChild(checkbox);
+        li.appendChild(span);
+        li.appendChild(deleteBtn);
+
+        todoList.appendChild(li);
     });
 
 }
 
-function handleCheckboxChange(checkbox, task,span) {
-    checkbox.addEventListener('change', function() {
+function handleCheckboxChange(checkbox, task, span) {
+    checkbox.addEventListener('change', function () {
         task.completed = this.checked;
         span.classList.toggle('completed', this.checked);
     });
-} 
+}
 
 function handleDeleteButton(deleteBtn, task, index) {
-    deleteBtn.addEventListener('click', function() {
+    deleteBtn.addEventListener('click', function () {
         tasks.splice(index, 1);
         renderTasks();
     });
@@ -85,12 +97,12 @@ function handleDeleteButton(deleteBtn, task, index) {
 
 addBtn.addEventListener('click', addTask);
 
-todoInput.addEventListener('keypress', function(event){
+todoInput.addEventListener('keypress', function (event) {
     if (event.key === 'Enter') {
         addTask();
     }
 });
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     todoInput.focus();
 });
