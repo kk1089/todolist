@@ -5,7 +5,7 @@ const remainingCount = document.querySelector('.remainingCount');
 const todoInput = document.getElementById('todoInput');
 const addBtn = document.getElementById('addBtn');
 
-let tasks = [];
+let tasks = JSON.parse(localStorage.getItem('myTodoTasks')) || [];
 
 todoInput.addEventListener('input', function () {
     if (this.value.trim() !== '') {
@@ -40,6 +40,7 @@ function addTask() {
 
     tasks.push(newTask);
     todoInput.value = '';
+    saveTasks();
     renderTasks();
     todoInput.focus();
 
@@ -85,14 +86,20 @@ function handleCheckboxChange(checkbox, task, span) {
     checkbox.addEventListener('change', function () {
         task.completed = this.checked;
         span.classList.toggle('completed', this.checked);
+        saveTasks();
     });
 }
 
 function handleDeleteButton(deleteBtn, task, index) {
     deleteBtn.addEventListener('click', function () {
         tasks.splice(index, 1);
+        saveTasks();
         renderTasks();
     });
+}
+
+function saveTasks() {
+    localStorage.setItem('myTodoTasks', JSON.stringify(tasks));
 }
 
 addBtn.addEventListener('click', addTask);
@@ -104,5 +111,6 @@ todoInput.addEventListener('keypress', function (event) {
 });
 
 document.addEventListener('DOMContentLoaded', function () {
+    renderTasks();
     todoInput.focus();
 });
