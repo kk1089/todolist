@@ -79,13 +79,15 @@ function renderTasks() {
 
         todoList.appendChild(li);
     });
-
+ 
+    updateStats();
 }
 
 function handleCheckboxChange(checkbox, task, span) {
     checkbox.addEventListener('change', function () {
         task.completed = this.checked;
         span.classList.toggle('completed', this.checked);
+        updateStats();
         saveTasks();
     });
 }
@@ -96,6 +98,16 @@ function handleDeleteButton(deleteBtn, task, index) {
         saveTasks();
         renderTasks();
     });
+}
+
+function updateStats() {
+    const total = tasks.length;
+    const completed = tasks.filter(t => t.completed).length;
+    const remaining = total - completed;
+    
+    totalCount.textContent = `Всего: ${total}`;
+    completedCount.textContent = `Выполнено: ${completed}`;
+    remainingCount.textContent = `Осталось: ${remaining}`;
 }
 
 function saveTasks() {
